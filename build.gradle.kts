@@ -9,8 +9,10 @@ version = "1.0.0"
 
 val jakartaPersistence = libs.jakarta.persistence
 val jacksonDatabind = libs.jackson.databind
+val jacksonBom = libs.jackson.bom
 val jedis = libs.jedis
 val junitJupiter = libs.junit.jupiter
+val junitBom = libs.junit.bom
 val junitPlatformLauncher = libs.junit.platform.launcher
 val mongodbDriver = libs.mongodb.driver
 val postgresql = libs.postgresql
@@ -36,6 +38,10 @@ subprojects {
 
     dependencyLocking {
         lockAllConfigurations()
+    }
+
+    dependencies {
+        "testImplementation"(platform(junitBom))
     }
 
     tasks.withType<Test>().configureEach {
@@ -123,6 +129,7 @@ project(":tavall-database-redis") {
 project(":tavall-database-qdrant") {
     dependencies {
         "api"(project(":tavall-database-core-contracts"))
+        "api"(platform(jacksonBom))
         "api"(jacksonDatabind)
         "testImplementation"(junitJupiter)
         "testRuntimeOnly"(junitPlatformLauncher)
